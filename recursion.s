@@ -11,4 +11,7 @@ main:
 
 	li $v0, 8 #accepts user input
 	la $a0, user_input
-	li $a1, 102 #specify the length the user can input
+	li $a1, 12 #specify the length the user can input
+	syscall
+	
+	
