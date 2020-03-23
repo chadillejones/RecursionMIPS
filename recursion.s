@@ -14,6 +14,7 @@ main:
 	li $a1, 12 #specify the length the user can input
 	syscall
 	
+	lw $t0, user_input #loads the word into $t0
 	
 	
 	
