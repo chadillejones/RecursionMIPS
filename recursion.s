@@ -28,6 +28,29 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	li $t1, 20 #checks if number if characters us >=20
 	li $t2, 0x0A #initialized a new line
 	lw $t3, 4($sp) #loads the user_input
+	li $t4, 32 #loaded a space here 
+	li $t5, 9 #loaded a tab here
+	li $t6, 0 #initialized count of valid characters
+	li $t7, 0 #initialized zero
+	li $t8, 48 #lowest possible valid character ascii
+	li $t9, 57 #hightest possible non-letter digit ascii
+	li $s0, 65 #lowest possible capital letter ascii
+	li $s1, 89 #highest possible capital letter ascii # =Y since N = 35
+	li $s2, 97 #lowest possible common letter ascii 
+	li $s3, 121 #highest possible common letter ascii = y since N = 35
+	j loop
 	
+	loop:
+		bgt $t6,$t1, print_invalid_input #if number of valid characters is greater than 20
+		
+	
+	
+	print_invalid_input: #prints invalid input and exists file
+	li $v0, 4
+	la $a0, invalid #prints "Invalid Input"
+	syscall
+	
+	li $v0, 10
+	syscall #tell the system to end the program
 	
 	
