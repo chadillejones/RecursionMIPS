@@ -48,6 +48,10 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	leading_characters:
 		beq $t0, $t4, skip_leading_tab_or_space #branches if leading charater is a space
 		beq $t0, $t5, skip_leading_tab_or_space #branches if leading character is a tab
+		j check_if_invalid #if it is not a tab or space then check if is valid
+	
+	skip_leading_tab_or_space: #skips character and goes to the next one
+	addi $t3, $t3, 1
 	
 	print_invalid_input: #prints invalid input and exists file
 	li $v0, 4
