@@ -44,6 +44,8 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		bgt $t6,$t1, print_invalid_input #if number of valid characters is greater than 20
 		lb $t0, 0($t3) #gets a character of the string
 		beq $t6, $t7, leading_characters #branch if character could be considered leading
+		beq $t0, $t4, skip_trailing_tab_or_space #branches if trailing character is equal to space
+		beq $t0, $t5, skip_trailing_tab_or_space #branches if trailing character is equal to tab
 		
 	leading_characters:
 		beq $t0, $t4, skip_leading_tab_or_space #branches if leading charater is a space
