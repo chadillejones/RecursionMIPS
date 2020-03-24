@@ -54,15 +54,19 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	
 	skip_leading_tab_or_space: #skips character and goes to the next one
 	addi $t3, $t3, 1
+	j loop
 	
 	skip_trailing_tab_or_space:  #fucntion for checking if the rest of the code is all trailing tabs or spaces
 	addi $t3, $t3, 1 #move to the next byte
 	lb $t0, 0($t3)  #gets a character of the string
-	beq $t4, $s3, valid_input #branches if only trailing tabs are spaces are found before newline
-	bne $t4, $t4, not_a_space #branches if character is not a space
+	beq $t3, $s3, valid_input #branches if only trailing tabs are spaces are found before newline
+	bne $t3, $t4, not_a_space #branches if character is not a space
 	j skip_trailing_tab_or_space #returns to check next character for trailing tab or space
 
-	
+	not_a_space:
+	bne $t3, $t5, print_invalid_input #if character after space for trailing is not a tab or space then print invalid
+	j skip_trailing_tab_or_space #returns to check the next character for trailing tab or space
+
 	print_invalid_input: #prints invalid input and exists file
 	li $v0, 4
 	la $a0, invalid #prints "Invalid Input"
