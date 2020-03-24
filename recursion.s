@@ -42,8 +42,12 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	
 	loop:
 		bgt $t6,$t1, print_invalid_input #if number of valid characters is greater than 20
+		lb $t0, 0($t3) #gets a character of the string
+		beq $t6, $t7, leading_characters #branch if character could be considered leading
 		
-	
+	leading_characters:
+		beq $t0, $t4, skip_leading_tab_or_space #branches if leading charater is a space
+		beq $t0, $t5, skip_leading_tab_or_space #branches if leading character is a tab
 	
 	print_invalid_input: #prints invalid input and exists file
 	li $v0, 4
@@ -52,5 +56,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	
 	li $v0, 10
 	syscall #tell the system to end the program
+	
+	
 	
 	
