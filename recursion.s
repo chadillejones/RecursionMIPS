@@ -48,6 +48,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	j loop
 	
 	loop:
+		bgt $s6,$t0, print_invalid_input #if max number of characters is greater than 100
 		bgt $t6,$t1, print_invalid_input #if number of valid characters is greater than 20
 		lb $s4, 0($t3) #gets a character of the string
 		beq $t6, $t7, leading_characters #branch if character could be considered leading
@@ -62,6 +63,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		addi $s5, $s5, 1 #increments the address of the new array
 		addi $t3, $t3, 1 #increments the address of the input string
 		addi $t6, $t6, 1 #increments the amount of valid characters
+		addi $s6, $s6, 1 # increments max number of characters
 		j loop
 		
 	leading_characters:
@@ -70,12 +72,15 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		j check_if_invalid #if it is not a tab or space then check if is valid
 	
 	skip_leading_tab_or_space: #skips character and goes to the next one
-	addi $t3, $t3, 1
+	addi $t3, $t3, 1 #increments the address of the input string
+	addi $s6, $s6, 1 # increments max number of characters
 	j loop
 	
 	skip_trailing_tab_or_space:  #fucntion for checking if the rest of the code is all trailing tabs or spaces
 	addi $t3, $t3, 1 #move to the next byte
+	addi $s6, $s6, 1 # increments max number of characters
 	lb $s4, 0($t3)  #gets a character of the string
+	bgt $s6,$t0, print_invalid_input #if max number of characters is greater than 100
 	beq $s4, $t2, valid_input #branches if only trailing tabs are spaces are found before newline
 	bne $s4, $s4, not_a_space #branches if character is not a space
 	j skip_trailing_tab_or_space #returns to check next character for trailing tab or space
@@ -100,6 +105,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	addi $s5, $s5, 1 #increments the address of the new array
 	addi $t3, $t3, 1 #increments the address of the input string
 	addi $t6, $t6, 1 #increments the amount of valid characters
+	addi $s6, $s6, 1 # increments max number of characters
 	j loop
 	
 	not_a_capital_letter: 
@@ -110,6 +116,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	addi $s5, $s5, 1 #increments the address of the new array
 	addi $t3, $t3, 1 #increments the address of the input string
 	addi $t6, $t6, 1 #increments the amount of valid characters
+	addi $s6, $s6, 1 # increments max number of characters
 	j loop
 	
 	valid_input:
