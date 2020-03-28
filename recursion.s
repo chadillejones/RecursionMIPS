@@ -1,5 +1,6 @@
 #Chadille Jones
 #02856918 % 11 = 9 Base 35
+#only was able to implement for 32bit number
 
 .data  #data declaration section
 user_input: .space 2000 #creating space for the users input
@@ -24,8 +25,14 @@ main:
 	
 	
 	jal getValidString #jumps to subprogram A
+	add $t1, $v0, $zero
+	li $v0, 1
+	move $a0, $t1
+	syscall #prints the result of the decimal equivalent to the base 35 number
+	li $v0, 10
+	syscall #tell the system to end the program
 	
-	
+
 	
 getValidString:   #subprogram A to accept all the string and make it substrings
 	sw $ra, 0($sp) #stores the return address for the program
@@ -120,26 +127,26 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	j loop
 	
 	valid_input:
-	sub $s5, $s5, $t5 #position address to first character
+	sub $s5, $s5, $t6 #position address to first character
 	li $t0, 35 #loads the base number
-	li $t1, 0 #the final recursive product sum lo 
+	li $t1, 100000 #the final recursive product sum lo 
 	li $t5, 0 #the final recursive product sum hi
+	add $t1, $zero, $zero
 	li $t2, 1 #set equal to 1
 	
 	recursion:
-	beq $t6, $2, end_recursion #branch if only one character is left
+	beq $t6, $t2, end_recursion #branch if only one character is left
 	lb $t4, 0($s5) #loads the address of the last character
 	add $t1, $t1, $t4 #adds it to the total
-	multu $t1, $t0 #multiplies the result by the base number
+	mult $t1, $t0 #multiplies the result by the base number
 	mflo $t1
+	addi $t6, $t6, -1
+	addi $s5, $s5, 1 
 	j recursion
 	
 	end_recursion:
 	lb $t4, 0($s5) #loads the address of the last character
 	add $t1, $t1, $t4 #adds it to the total
 	
-	
-	li $v0, 1
-	move $a0, $t1
-	syscall #prints the result of the decimal equivalent to the base 35 number
-	
+	add $v0, $zero, $t1
+	jr $ra
