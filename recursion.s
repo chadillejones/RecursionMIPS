@@ -47,7 +47,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		beq $t0, $t4, skip_trailing_tab_or_space #branches if trailing character is equal to space
 		beq $t0, $t5, skip_trailing_tab_or_space #branches if trailing character is equal to tab
 		beq $t0, $s3, valid_input #branches if a newline comes before a invalid character is entered
-
+	check_if_invalid:
 		
 	leading_characters:
 		beq $t0, $t4, skip_leading_tab_or_space #branches if leading charater is a space
@@ -77,6 +77,6 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	li $v0, 10
 	syscall #tell the system to end the program
 	
-	
+	valid_input:
 	
 	
