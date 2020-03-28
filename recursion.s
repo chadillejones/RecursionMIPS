@@ -86,6 +86,10 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	addi $s4, $s4, -55 #makes the ascii for digit align with capital letters
 	
 	not_a_capital_letter: 
+	blt $s4, $s2, print_invalid_input #breaks if ascii of character is < 97
+	bgt $s4, $s3, print_invalid_input #breaks if ascii of character is > 121
+	addi $s4, $s4, -87 #makes the ascii for digit align with common letters
+
 	
 	valid_input:
 	
