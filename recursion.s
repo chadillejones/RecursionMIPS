@@ -88,7 +88,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	blt $s4, $s0, print_invalid_input #breaks if ascii of character is < 65
 	bgt $s4, $s1, not_a_capital_letter #breaks if ascii of character is > 89
 	addi $s4, $s4, -55 #makes the ascii for digit align with capital letters
-	sb $t4, 0($s5) #stores the character in a new string
+	sb $s4, 0($s5) #stores the character in a new string
 	addi $s5, $s5, 1 #increments the address of the new array
 	addi $t3, $t3, 1 #increments the address of the input string
 	addi $t6, $t6, 1 #increments the amount of valid characters
@@ -98,7 +98,11 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	blt $s4, $s2, print_invalid_input #breaks if ascii of character is < 97
 	bgt $s4, $s3, print_invalid_input #breaks if ascii of character is > 121
 	addi $s4, $s4, -87 #makes the ascii for digit align with common letters
-
+	sb $s4, 0($s5) #stores the character in a new string
+	addi $s5, $s5, 1 #increments the address of the new array
+	addi $t3, $t3, 1 #increments the address of the input string
+	addi $t6, $t6, 1 #increments the amount of valid characters
+	j loop
 	
 	valid_input:
 	
