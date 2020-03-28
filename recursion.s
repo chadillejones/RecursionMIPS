@@ -20,6 +20,7 @@ main:
 	sub $sp, $sp, 12 #moves the pointer for stack
 	sw $t0, 4($sp) #adds the input string to the stack
 	la $a0, list #load the list 
+	la $a1, user_input
 	
 	
 	jal getValidString #jumps to subprogram A
@@ -30,8 +31,10 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	sw $ra, 0($sp) #stores the return address for the program
 	li $t1, 20 #checks if number if characters us >=20
 	li $t2, 0x0A #initialized a new line
-	la $t3, 4($sp) #loads the user_input
+	add $t3, $a1, $zero #loads the user_input
 	li $t4, 32 #loaded a space here 
+	li $t0, 100 #loaded max amount of entered characters
+	li $s6, 0 #counter for max characters
 	li $t5, 9 #loaded a tab here
 	li $t6, 0 #initialized count of valid characters
 	li $t7, 0 #initialized zero
@@ -50,7 +53,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		beq $t6, $t7, leading_characters #branch if character could be considered leading
 		beq $s4, $t4, skip_trailing_tab_or_space #branches if trailing character is equal to space
 		beq $s4, $t5, skip_trailing_tab_or_space #branches if trailing character is equal to tab
-		beq $s4, $s3, valid_input #branches if a newline comes before a invalid character is entered
+		beq $s4, $t2, valid_input #branches if a newline comes before a invalid character is entered
 	check_if_invalid:
 		blt $s4, $t8, print_invalid_input #breaks if ascii of character is < 48
 		bgt $s4, $t9, not_a_digit #breaks if ascii of character is > 57
@@ -73,7 +76,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	skip_trailing_tab_or_space:  #fucntion for checking if the rest of the code is all trailing tabs or spaces
 	addi $t3, $t3, 1 #move to the next byte
 	lb $s4, 0($t3)  #gets a character of the string
-	beq $s4, $s3, valid_input #branches if only trailing tabs are spaces are found before newline
+	beq $s4, $t2, valid_input #branches if only trailing tabs are spaces are found before newline
 	bne $s4, $s4, not_a_space #branches if character is not a space
 	j skip_trailing_tab_or_space #returns to check next character for trailing tab or space
 
