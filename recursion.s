@@ -122,14 +122,24 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	valid_input:
 	sub $s5, $s5, $t5 #position address to first character
 	li $t0, 35 #loads the base number
-	li $t1, 0 #the final recursive product sum
+	li $t1, 0 #the final recursive product sum lo 
+	li $t5, 0 #the final recursive product sum hi
 	li $t2, 1 #set equal to 1
 	
 	recursion:
 	beq $t6, $2, end_recursion #branch if only one character is left
-	
+	lb $t4, 0($s5) #loads the address of the last character
+	add $t1, $t1, $t4 #adds it to the total
+	multu $t1, $t0 #multiplies the result by the base number
+	mflo $t1
+	j recursion
 	
 	end_recursion:
-	lb $t4, 0(s5) #loads the address of the last character
+	lb $t4, 0($s5) #loads the address of the last character
 	add $t1, $t1, $t4 #adds it to the total
+	
+	
+	li $v0, 1
+	move $a0, $t1
+	syscall #prints the result of the decimal equivalent to the base 35 number
 	
