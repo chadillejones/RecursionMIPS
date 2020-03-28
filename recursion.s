@@ -55,6 +55,11 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		blt $s4, $t8, print_invalid_input #breaks if ascii of character is < 48
 		bgt $s4, $t9, not_a_digit #breaks if ascii of character is > 57
 		addi $s4, $s4, -48 #makes the ascii for digit align with digits
+		sb $s4, 0($s5) #stores the character in a new string
+		addi $s5, $s5, 1 #increments the address of the new array
+		addi $t3, $t3, 1 #increments the address of the input string
+		addi $t6, $t6, 1 #increments the amount of valid characters
+		j loop
 		
 	leading_characters:
 		beq $s4, $t4, skip_leading_tab_or_space #branches if leading charater is a space
