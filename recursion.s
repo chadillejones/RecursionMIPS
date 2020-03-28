@@ -48,9 +48,9 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		beq $s4, $t5, skip_trailing_tab_or_space #branches if trailing character is equal to tab
 		beq $s4, $s3, valid_input #branches if a newline comes before a invalid character is entered
 	check_if_invalid:
-		blt $s4, $t7, print_invalid_input #breaks if ascii of character is < 48
-		bgt $s4, $t8, not_a_digit #breaks if ascii of character is > 57
-		addi $s4, $t4, -48 #makes the ascii for digit align with digits
+		blt $s4, $t8, print_invalid_input #breaks if ascii of character is < 48
+		bgt $s4, $t9, not_a_digit #breaks if ascii of character is > 57
+		addi $s4, $s4, -48 #makes the ascii for digit align with digits
 		
 	leading_characters:
 		beq $s4, $t4, skip_leading_tab_or_space #branches if leading charater is a space
@@ -65,7 +65,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	addi $s4, $s4, 1 #move to the next byte
 	lb $s4, 0($t3)  #gets a character of the string
 	beq $s4, $s3, valid_input #branches if only trailing tabs are spaces are found before newline
-	bne $s4, $t4, not_a_space #branches if character is not a space
+	bne $s4, $s4, not_a_space #branches if character is not a space
 	j skip_trailing_tab_or_space #returns to check next character for trailing tab or space
 
 	not_a_space:
@@ -81,6 +81,11 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	syscall #tell the system to end the program
 	
 	not_a_digit:
+	blt $s4, $s0, print_invalid_input #breaks if ascii of character is < 65
+	bgt $s4, $s1, not_a_capital_letter #breaks if ascii of character is > 89
+	addi $s4, $s4, -55 #makes the ascii for digit align with capital letters
+	
+	not_a_capital_letter: 
 	
 	valid_input:
 	
