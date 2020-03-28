@@ -27,7 +27,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	sw $ra, 0($sp) #stores the return address for the program
 	li $t1, 20 #checks if number if characters us >=20
 	li $t2, 0x0A #initialized a new line
-	lw $t3, 4($sp) #loads the user_input
+	la $t3, 4($sp) #loads the user_input
 	li $t4, 32 #loaded a space here 
 	li $t5, 9 #loaded a tab here
 	li $t6, 0 #initialized count of valid characters
@@ -42,31 +42,34 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	
 	loop:
 		bgt $t6,$t1, print_invalid_input #if number of valid characters is greater than 20
-		lb $t0, 0($t3) #gets a character of the string
+		lb $s4, 0($t3) #gets a character of the string
 		beq $t6, $t7, leading_characters #branch if character could be considered leading
-		beq $t0, $t4, skip_trailing_tab_or_space #branches if trailing character is equal to space
-		beq $t0, $t5, skip_trailing_tab_or_space #branches if trailing character is equal to tab
-		beq $t0, $s3, valid_input #branches if a newline comes before a invalid character is entered
+		beq $s4, $t4, skip_trailing_tab_or_space #branches if trailing character is equal to space
+		beq $s4, $t5, skip_trailing_tab_or_space #branches if trailing character is equal to tab
+		beq $s4, $s3, valid_input #branches if a newline comes before a invalid character is entered
 	check_if_invalid:
+		blt $s4, $t7, print_invalid_input #breaks if ascii of character is < 48
+		bgt $s4, $t8, not_a_digit #breaks if ascii of character is > 57
+		addi $s4, $t4, -48 #makes the ascii for digit align with digits
 		
 	leading_characters:
-		beq $t0, $t4, skip_leading_tab_or_space #branches if leading charater is a space
-		beq $t0, $t5, skip_leading_tab_or_space #branches if leading character is a tab
+		beq $s4, $t4, skip_leading_tab_or_space #branches if leading charater is a space
+		beq $s4, $t5, skip_leading_tab_or_space #branches if leading character is a tab
 		j check_if_invalid #if it is not a tab or space then check if is valid
 	
 	skip_leading_tab_or_space: #skips character and goes to the next one
-	addi $t0, $t0, 1
+	addi $s4, $s4, 1
 	j loop
 	
 	skip_trailing_tab_or_space:  #fucntion for checking if the rest of the code is all trailing tabs or spaces
-	addi $t0, $t0, 1 #move to the next byte
-	lb $t0, 0($t3)  #gets a character of the string
-	beq $t0, $s3, valid_input #branches if only trailing tabs are spaces are found before newline
-	bne $t0, $t4, not_a_space #branches if character is not a space
+	addi $s4, $s4, 1 #move to the next byte
+	lb $s4, 0($t3)  #gets a character of the string
+	beq $s4, $s3, valid_input #branches if only trailing tabs are spaces are found before newline
+	bne $s4, $t4, not_a_space #branches if character is not a space
 	j skip_trailing_tab_or_space #returns to check next character for trailing tab or space
 
 	not_a_space:
-	bne $t0, $t5, print_invalid_input #if character after space for trailing is not a tab or space then print invalid
+	bne $s4, $t5, print_invalid_input #if character after space for trailing is not a tab or space then print invalid
 	j skip_trailing_tab_or_space #returns to check the next character for trailing tab or space
 
 	print_invalid_input: #prints invalid input and exists file
@@ -76,6 +79,8 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	
 	li $v0, 10
 	syscall #tell the system to end the program
+	
+	not_a_digit:
 	
 	valid_input:
 	
