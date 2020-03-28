@@ -4,6 +4,8 @@
 .data  #data declaration section
 user_input: .space 2000 #creating space for the users input
 invalid: .asciiz "Invalid input"
+list: .word 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 #initialize a word list
+
 
 .text #Assembly language instruction
 
@@ -17,7 +19,7 @@ main:
 	lw $t0, user_input #loads the word in $t0
 	sub $sp, $sp, 12 #moves the pointer for stack
 	sw $t0, 4($sp) #adds the input string to the stack
-
+	la $s5, list #load the address of the list #reverted change
 	
 	jal getValidString #jumps to subprogram A
 	
