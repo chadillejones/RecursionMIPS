@@ -19,7 +19,8 @@ main:
 	lw $t0, user_input #loads the word in $t0
 	sub $sp, $sp, 12 #moves the pointer for stack
 	sw $t0, 4($sp) #adds the input string to the stack
-	la $s5, list #load the address of the list #reverted change
+	la $a0, list #load the list 
+	
 	
 	jal getValidString #jumps to subprogram A
 	
@@ -40,6 +41,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	li $s1, 89 #highest possible capital letter ascii # =Y since N = 35
 	li $s2, 97 #lowest possible common letter ascii 
 	li $s3, 121 #highest possible common letter ascii = y since N = 35
+	add $s5, $a0, $zero
 	j loop
 	
 	loop:
@@ -86,6 +88,7 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	blt $s4, $s0, print_invalid_input #breaks if ascii of character is < 65
 	bgt $s4, $s1, not_a_capital_letter #breaks if ascii of character is > 89
 	addi $s4, $s4, -55 #makes the ascii for digit align with capital letters
+	
 	
 	not_a_capital_letter: 
 	blt $s4, $s2, print_invalid_input #breaks if ascii of character is < 97
