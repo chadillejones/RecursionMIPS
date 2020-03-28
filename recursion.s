@@ -120,5 +120,16 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	j loop
 	
 	valid_input:
+	sub $s5, $s5, $t5 #position address to first character
+	li $t0, 35 #loads the base number
+	li $t1, 0 #the final recursive product sum
+	li $t2, 1 #set equal to 1
 	
+	recursion:
+	beq $t6, $2, end_recursion #branch if only one character is left
+	
+	
+	end_recursion:
+	lb $t4, 0(s5) #loads the address of the last character
+	add $t1, $t1, $t4 #adds it to the total
 	
