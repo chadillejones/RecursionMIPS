@@ -62,11 +62,11 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 		j check_if_invalid #if it is not a tab or space then check if is valid
 	
 	skip_leading_tab_or_space: #skips character and goes to the next one
-	addi $s4, $s4, 1
+	addi $t3, $t3, 1
 	j loop
 	
 	skip_trailing_tab_or_space:  #fucntion for checking if the rest of the code is all trailing tabs or spaces
-	addi $s4, $s4, 1 #move to the next byte
+	addi $t3, $t3, 1 #move to the next byte
 	lb $s4, 0($t3)  #gets a character of the string
 	beq $s4, $s3, valid_input #branches if only trailing tabs are spaces are found before newline
 	bne $s4, $s4, not_a_space #branches if character is not a space
@@ -88,7 +88,11 @@ getValidString:   #subprogram A to accept all the string and make it substrings
 	blt $s4, $s0, print_invalid_input #breaks if ascii of character is < 65
 	bgt $s4, $s1, not_a_capital_letter #breaks if ascii of character is > 89
 	addi $s4, $s4, -55 #makes the ascii for digit align with capital letters
-	
+	sb $t4, 0($s5) #stores the character in a new string
+	addi $s5, $s5, 1 #increments the address of the new array
+	addi $t3, $t3, 1 #increments the address of the input string
+	addi $t6, $t6, 1 #increments the amount of valid characters
+	j loop
 	
 	not_a_capital_letter: 
 	blt $s4, $s2, print_invalid_input #breaks if ascii of character is < 97
